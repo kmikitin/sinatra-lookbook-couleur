@@ -12,6 +12,27 @@ class UserController < ApplicationController
 	# new user post route
 	post '/newuser' do
 		@user = User.new 
+		p '---------------'
+		p params
+
+		p params[:palette_id]
+
+		@user.username = params[:username]
+		@user.password = params[:password]
+		@user.name = params[:name]
+		@user.email = params[:email]
+		@user.palette_id = params[:palette_id]
+		@user.save
+
+		session[:logged_in] = true
+		session[:username] = @user.username
+		session[:user_id] = @user.id
+		# session[:message] = "Thank you for signing up!"
+		p '--------------'
+		p @user
+
+		@user.to_json
+
 	end
 
 	# login
@@ -36,6 +57,12 @@ class UserController < ApplicationController
 
 	# profile
 	get'/:id' do
+
+		# these are just notes/ideas of where to start
+		# @user = User.find params[:id]
+		# @user.palette_id
+
+		# @colors = Color.find 
 	end
 
 	# edit

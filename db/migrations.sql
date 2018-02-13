@@ -11,7 +11,7 @@ CREATE TABLE users(
 	id SERIAL PRIMARY KEY, 
 	name VARCHAR(50), 
 	username VARCHAR (50) UNIQUE NOT NULL, 
-	password VARCHAR(255) NOT NULL, 
+	password_digest VARCHAR(255) NOT NULL, 
 	email VARCHAR(355),
 	palette_id INT REFERENCES palettes(id));
 
@@ -19,7 +19,7 @@ CREATE TABLE users(
 CREATE TABLE colors(
 	id SERIAL PRIMARY KEY, 
 	color_name VARCHAR(255),
-	palette_id INT REFERENCES users(id));
+	palette_id INT REFERENCES palettes(id));
 
 
 
