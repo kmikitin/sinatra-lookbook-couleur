@@ -4,11 +4,9 @@ class UserController < ApplicationController
 
 	# register - get palettes from db and save their ids, names
 	get '/register' do
-		@palettes = Palette.all
+		@colors = Color.all
 
-		puts @palettes.to_json
-
-		@palettes.to_json
+		@colors.to_json
 	end
 
 	# new user post route
@@ -18,6 +16,22 @@ class UserController < ApplicationController
 
 	# login
 	get '/login' do
+
+		@pw = params[:password]
+		@user = User.find_by(username: params[:username])
+
+		if @user && @user.authenticate(@pw)
+			session[:username] = @user.username
+			session[:user_id] = @user.id
+			session[:logged_in] = true
+			session[:message] = "Logged in as #{@user.username}"
+			redirect '/users'
+		else
+			session[:message] = "Invalid username or password, please try again"
+			redirect '/users/login'
+		end
+
+
 	end
 
 	# profile

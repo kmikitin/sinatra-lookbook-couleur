@@ -1,10 +1,9 @@
 # require 'bcrypt'
 
 class User < ActiveRecord::Base
-
+	has_secure_password
 	has_one :palette
 	has_many :colors, :through => :palette
-	# has_secure_password
 
 	# def password
 	# 	@password ||= Password.new(password_hash)
