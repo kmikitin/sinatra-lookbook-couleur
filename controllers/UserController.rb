@@ -2,19 +2,36 @@ enable :sessions
 
 class UserController < ApplicationController
 
-	# register
+	# register - get palettes from db and save their ids, names
 	get '/register' do
-		@palettes = Palette.all
+		@colors = Color.all
 
-		@palettes.to_json
+		@colors.to_json
 	end
 
+	# new user post route
 	post '/newuser' do
 		@user = User.new 
 	end
 
 	# login
 	get '/login' do
+
+		@pw = params[:password]
+		@user = User.find_by(username: params[:username])
+
+		if @user && @user.authenticate(@pw)
+			session[:username] = @user.username
+			session[:user_id] = @user.id
+			session[:logged_in] = true
+			session[:message] = "Logged in as #{@user.username}"
+			redirect '/users'
+		else
+			session[:message] = "Invalid username or password, please try again"
+			redirect '/users/login'
+		end
+
+
 	end
 
 	# profile

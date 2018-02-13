@@ -31,4 +31,13 @@ class ApplicationController < Sinatra::Base
 		response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
 	end
 
+	get '/' do
+		@palettes = Palette.all
+
+		puts @palettes.to_json
+
+		@palettes.to_json
+	end
+
+
 end
