@@ -2,6 +2,8 @@ INSERT INTO users (name, username, password_digest, email, palette_id) VALUES ('
 INSERT INTO users (name, username, password_digest, email, palette_id) VALUES ('Kayla Ancrum', 'kancrum', 'kayla', 'indie_bindi@hotmail.com', 6);
 
 
+
+
 INSERT INTO palettes (name) VALUES ('Light Spring');
 INSERT INTO palettes (name) VALUES ('Clear Spring');
 INSERT INTO palettes (name) VALUES ('Warm Spring');
@@ -14,6 +16,7 @@ INSERT INTO palettes (name) VALUES ('Warm Autumn');
 INSERT INTO palettes (name) VALUES ('Deep Winter');
 INSERT INTO palettes (name) VALUES ('Clear Winter');
 INSERT INTO palettes (name) VALUES ('Cool Winter');
+
 
 --spring light
 INSERT INTO colors (color_name, palette_id) VALUES ('Deep Sky Blue', 1);
@@ -99,5 +102,6 @@ INSERT INTO colors (color_name, palette_id) VALUES ('Silver Violet', 12);
 INSERT INTO colors (color_name, palette_id) VALUES ('Dark Turquoise', 12);
 INSERT INTO colors (color_name, palette_id) VALUES ('Mauve Lavender', 12);
 INSERT INTO colors (color_name, palette_id) VALUES ('Cotton Candy Pink', 12);
+
 
 
