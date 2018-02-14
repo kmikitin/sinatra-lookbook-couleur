@@ -2,13 +2,6 @@ enable :sessions
 
 class UserController < ApplicationController
 
-	# register - get palettes from db and save their ids, names
-	get '/register' do
-		@colors = Color.all
-
-		@colors.to_json
-	end
-
 	# new user post route
 	post '/newuser' do
 		@user = User.new 
@@ -36,20 +29,40 @@ class UserController < ApplicationController
 	end
 
 	# login
-	get '/login' do
+	post '/login' do
+		payload = params
+		payload = JSON.parse(request.body.read).symbolize_keys
 
-		@pw = params[:password]
-		@user = User.find_by(username: params[:username])
+		p '--------------------'
+		p payload
 
-		if @user && @user.authenticate(@pw)
+		@pwd = payload[:password]
+		@user = User.find_by(username: payload[:username])
+
+		# used this to check w/Postman
+		# @pwd = params[:password]
+		# @user = User.find_by(username: params[:username])
+
+		if @user && @user.authenticate(@pwd)
 			session[:username] = @user.username
 			session[:user_id] = @user.id
 			session[:logged_in] = true
 			session[:message] = "Logged in as #{@user.username}"
-			redirect '/users'
+			resp = {
+				id: @user.id,
+				name: @user.name,
+				username: @user.username,
+				email: @user.email,
+				palette_id: @user.palette_id,
+				confirmation: session[:message]
+			}
+			resp.to_json
 		else
 			session[:message] = "Invalid username or password, please try again"
-			redirect '/users/login'
+			resp = {
+				confirmation: session[:message]
+			}
+			resp.to_json
 		end
 
 
@@ -71,6 +84,10 @@ class UserController < ApplicationController
 
 	# update
 	put '/:id' do
+	end
+
+	# delete
+	delete '/:id' do
 	end
 
 end
