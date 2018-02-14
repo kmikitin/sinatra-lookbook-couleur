@@ -47,6 +47,7 @@ class UserController < ApplicationController
 			session[:logged_in] = true
 			session[:message] = "Logged in as #{@user.username}"
 			resp = {
+				id: @user.id,
 				palette_id: @user.palette_id,
 				confirmation: session[:message]
 			}
@@ -61,20 +62,30 @@ class UserController < ApplicationController
 
 	end
 
+	# logout
+	get '/logout' do
+		session[:username] = nil
+		session[:user_id] = nil
+		session[:logged_in] = false
+		session[:message] = "You have logged out. Bye."
+
+		session[:message].to_json
+	end
+
 	# profile
 	get'/:id' do
 
-		@user = User.find_by(palette_id: params[:id])
+		@user = User.find params[:id]
 		# p '----------------'
 		# p @user
 
-		@colors = Color.where(palette_id: params[:id])
+		@colors = Color.where(palette_id: @user.palette_id)
 		# p '----------------'
 		# p @colors
 
-		@palette = Palette.find params[:id]
-		p '----------------'
-		p @palette
+		@palette = Palette.find_by(id: @user.palette_id) 
+		# p '----------------'
+		# p @palette
 
 		resp = {
 			id: @user.id,
@@ -90,14 +101,52 @@ class UserController < ApplicationController
 
 	# edit
 	get '/edit/:id' do
+		@user = User.find params[:id]
+		@palette = Palette.find_by(id: @user.palette_id)
+		# p '-----------------'
+		# p @palette
+
+		resp = {
+			id: @user.id,
+			name: @user.name,
+			email: @user.email,
+			palette_name: @palette.name,
+			palette_id: @palette.id
+		}
+
+		resp.to_json
 	end
 
-	# update
+	# update password
+	post '/password' do
+		# gonna finish this soon
+	end
+
+
+	# update account
 	put '/:id' do
+		p '---------------'
+		payload = params
+		payload = JSON.parse(request.body.read).symbolize_keys
+		p payload
+
+		@user = User.find payload[:id]
+		@user.name = payload[:name]
+		@user.email = payload[:email]
+		@user.palette_id = payload[:palette_id]
+		@user.save
+
+		@user.to_json
 	end
 
 	# delete
 	delete '/:id' do
+		p params
+
+		@user = User.find params[:id]
+		@user.delete
+
+		@user.to_json
 	end
 
 end
