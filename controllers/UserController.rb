@@ -1,14 +1,12 @@
-enable :sessions
-
 class UserController < ApplicationController
 
 	# new user post route
 	post '/newuser' do
 		@user = User.new 
-		p '---------------'
-		p params
+		# p '---------------'
+		# p params
 
-		p params[:palette_id]
+		# p params[:palette_id]
 
 		@user.username = params[:username]
 		@user.password = params[:password]
@@ -21,8 +19,8 @@ class UserController < ApplicationController
 		session[:username] = @user.username
 		session[:user_id] = @user.id
 		# session[:message] = "Thank you for signing up!"
-		p '--------------'
-		p @user
+		# p '--------------'
+		# p @user
 
 		@user.to_json
 
@@ -33,8 +31,8 @@ class UserController < ApplicationController
 		payload = params
 		payload = JSON.parse(request.body.read).symbolize_keys
 
-		p '--------------------'
-		p payload
+		# p '--------------------'
+		# p payload
 
 		@pwd = payload[:password]
 		@user = User.find_by(username: payload[:username])
@@ -49,10 +47,6 @@ class UserController < ApplicationController
 			session[:logged_in] = true
 			session[:message] = "Logged in as #{@user.username}"
 			resp = {
-				id: @user.id,
-				name: @user.name,
-				username: @user.username,
-				email: @user.email,
 				palette_id: @user.palette_id,
 				confirmation: session[:message]
 			}
@@ -65,17 +59,33 @@ class UserController < ApplicationController
 			resp.to_json
 		end
 
-
 	end
 
 	# profile
 	get'/:id' do
 
-		# these are just notes/ideas of where to start
-		# @user = User.find params[:id]
-		# @user.palette_id
+		@user = User.find_by(palette_id: params[:id])
+		# p '----------------'
+		# p @user
 
-		# @colors = Color.find 
+		@colors = Color.where(palette_id: params[:id])
+		# p '----------------'
+		# p @colors
+
+		@palette = Palette.find params[:id]
+		p '----------------'
+		p @palette
+
+		resp = {
+			id: @user.id,
+			name: @user.name,
+			username: @user.username,
+			email: @user.email,
+			palette_name: @palette.name,
+			colors: @colors
+		}
+
+		resp.to_json
 	end
 
 	# edit
