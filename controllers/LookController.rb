@@ -19,7 +19,7 @@ class LookController < ApplicationController
 		p 'worked'
 	end
 
-	# get route for specific color
+	# get route for specific color's looks
 	get '/color/:id' do
 		p '-----------------'
 		p params
