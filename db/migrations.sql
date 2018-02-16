@@ -19,6 +19,7 @@ CREATE TABLE users(
 CREATE TABLE colors(
 	id SERIAL PRIMARY KEY, 
 	color_name VARCHAR(255),
+	hex VARCHAR(50),
 	palette_id INT REFERENCES palettes(id));
 
 

@@ -11,6 +11,7 @@ require './models/ColorModel'
 # Controllers
 require './controllers/ApplicationController'
 require './controllers/UserController'
+require './controllers/LookController'
 
 # Routes
 map('/'){
@@ -19,4 +20,8 @@ map('/'){
 
 map('/users'){
 	run UserController
+}
+
+map('/looks'){
+	run LookController
 }

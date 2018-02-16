@@ -36,6 +36,7 @@ class UserController < ApplicationController
 
 		@pwd = payload[:password]
 		@user = User.find_by(username: payload[:username])
+		@colors = Color.where(palette_id: @user.palette_id)
 
 		# used this to check w/Postman
 		# @pwd = params[:password]
@@ -49,6 +50,7 @@ class UserController < ApplicationController
 			resp = {
 				id: @user.id,
 				palette_id: @user.palette_id,
+				colors: @colors,
 				confirmation: session[:message]
 			}
 			resp.to_json
@@ -67,7 +69,7 @@ class UserController < ApplicationController
 		session[:username] = nil
 		session[:user_id] = nil
 		session[:logged_in] = false
-		session[:message] = "You have logged out. Bye."
+		session[:message] = "You have logged out."
 
 		session[:message].to_json
 	end
@@ -87,13 +89,18 @@ class UserController < ApplicationController
 		# p '----------------'
 		# p @palette
 
+		@looks = []
+		@colors.each { |color| @looks.push(color.looks)}
+
+		# binding.pry
 		resp = {
 			id: @user.id,
 			name: @user.name,
 			username: @user.username,
 			email: @user.email,
 			palette_name: @palette.name,
-			colors: @colors
+			colors: @colors,
+			looks: @looks
 		}
 
 		resp.to_json
