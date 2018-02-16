@@ -8,6 +8,8 @@ class UserController < ApplicationController
 
 		# p params[:palette_id]
 
+		@colors = Color.where(palette_id: params[:palette_id])
+
 		@user.username = params[:username]
 		@user.password = params[:password]
 		@user.name = params[:name]
@@ -22,8 +24,18 @@ class UserController < ApplicationController
 		# p '--------------'
 		# p @user
 
-		@user.to_json
+		# @user.to_json
 
+		resp = {
+			id: @user.id,
+			email: @user.email,
+			name: @user.name,
+			username: @user.username,
+			palette_id: @user.palette_id,
+			colors: @colors
+		}
+
+		resp.to_json
 	end
 
 	# login
@@ -127,6 +139,7 @@ class UserController < ApplicationController
 	# update password
 	post '/password' do
 		# gonna finish this soon
+		# bycrypt compare to suss user.authenticate
 	end
 
 
